@@ -53,6 +53,7 @@ message UnRegisterWorkerManagerRequest {
 
 message UnRegisterWorkerManagerResponse {
   string message = 1;
+  uint64 code = 2;
 }
 
 message FetchWorkerMangersRequest{
@@ -61,6 +62,7 @@ message FetchWorkerMangersRequest{
 
 message FetchWorkerMangersResponse{
   string message = 1;
+  uint64 code = 2;
 }
 
 message RegisterTaskRequest {
