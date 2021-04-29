@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package fastjob;
+
+// The FastJob service definition.
+service FastJob {
+  // Sends a register/unregister worker manager request
+  rpc RegisterWorkerManager(RegisterWorkerManagerRequest) returns (RegisterWorkerManagerResponse) {}
+  rpc UnRegisterWorkerManager(UnRegisterWorkerManagerRequest) returns (UnRegisterWorkerManagerResponse) {}
+
+  // Sends a register/unregister task request
+  rpc RegisterTask(RegisterTaskRequest) returns (RegisterTaskResponse) {}
+  rpc UnRegisterTask(UnRegisterTaskRequest) returns (UnRegisterTaskResponse) {}
+
+  // Sends a metadata request (Gossip protocol).
+  rpc EntropyMetadata(EntropyMetadataRequest) returns (EntropyMetadataResponse) {}
+  rpc DirectMailMetadata(DirectMailMetadataRequest) returns (DirectMailMetadataResponse) {}
+
+}
+
+message RegisterWorkerManagerRequest {
+  uint64 workerManagerId = 1;
+}
+
+message RegisterWorkerManagerResponse {
+  string message = 1;
+}
+
+
+message UnRegisterWorkerManagerRequest {
+  uint64 workerManagerId = 1;
+}
+
+message UnRegisterWorkerManagerResponse {
+  string message = 1;
+}
+
+message RegisterTaskRequest {
+  uint64 taskId = 1;
+}
+
+message RegisterTaskResponse {
+  string message = 1;
+}
+
+message UnRegisterTaskRequest {
+  uint64 taskId = 1;
+}
+
+message UnRegisterTaskResponse {
+  string message = 1;
+}
+
+message EntropyMetadataRequest {
+  uint64 nodeId = 1;
+}
+
+message EntropyMetadataResponse {
+  string message = 1;
+}
+
+message DirectMailMetadataRequest {
+  uint64 nodeId = 1;
+}
+
+message DirectMailMetadataResponse {
+  string message = 1;
+}
