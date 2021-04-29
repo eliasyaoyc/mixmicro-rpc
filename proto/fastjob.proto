@@ -7,6 +7,7 @@ service FastJob {
   // Sends a register/unregister worker manager request
   rpc RegisterWorkerManager(RegisterWorkerManagerRequest) returns (RegisterWorkerManagerResponse) {}
   rpc UnRegisterWorkerManager(UnRegisterWorkerManagerRequest) returns (UnRegisterWorkerManagerResponse) {}
+  rpc FetchWorkerMangers(FetchWorkerMangersRequest) returns (FetchWorkerMangersResponse){}
 
   // Sends a register/unregister task request
   rpc RegisterTask(RegisterTaskRequest) returns (RegisterTaskResponse) {}
@@ -18,20 +19,47 @@ service FastJob {
 
 }
 
+enum WorkerManagerScope {
+  /// Belongs to `FastJobServer`.
+  ServerSide = 0;
+  /// Belongs to `ApplicationSDK`.
+  ApplicationSide = 1;
+  EMPTY = 2;
+}
+
+message WorkerMangerConfig {
+
+}
+
+
 message RegisterWorkerManagerRequest {
   uint64 workerManagerId = 1;
+  string localAddr = 2;
+  WorkerManagerScope workerManagerScope = 3;
+  WorkerMangerConfig workerManagerConfig = 4;
 }
 
 message RegisterWorkerManagerResponse {
   string message = 1;
+  uint64 code = 2;
 }
 
 
 message UnRegisterWorkerManagerRequest {
   uint64 workerManagerId = 1;
+  string localAddr = 2;
+  bool isServiceSide = 3;
 }
 
 message UnRegisterWorkerManagerResponse {
+  string message = 1;
+}
+
+message FetchWorkerMangersRequest{
+
+}
+
+message FetchWorkerMangersResponse{
   string message = 1;
 }
 
