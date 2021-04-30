@@ -31,7 +31,6 @@ message WorkerMangerConfig {
 
 }
 
-
 message RegisterWorkerManagerRequest {
   uint64 workerManagerId = 1;
   string localAddr = 2;
@@ -65,8 +64,44 @@ message FetchWorkerMangersResponse{
   uint64 code = 2;
 }
 
+enum TimeExpressionType {
+  CRON = 0;
+}
+
+enum ExecuteType {
+  JAR = 0;
+  URL = 1;
+}
+
+enum TaskStatus {
+  INIT = 0;
+  READY = 1;
+  RUNNING = 2;
+  COMPLETED = 3;
+}
+
 message RegisterTaskRequest {
   uint64 taskId = 1;
+  string taskName = 2;
+  string taskDesc = 3;
+  uint64 appId = 4;
+  uint64 taskManagerId = 5;
+  string taskParams = 6;
+  TimeExpressionType timeExpressionType = 7;
+  string timeExpression = 8;
+  ExecuteType executeType = 9;
+  uint32 maxInstanceNum = 10;
+  uint32 concurrency = 11;
+  uint64 instanceTimeLimit = 12;
+  uint64 instanceRetryTime = 13;
+  uint32 taskRetryNum = 14;
+  TaskStatus taskStatus = 15;
+  uint64 nextTriggerTime = 16;
+  uint32 maxCpuCores = 17;
+  double maxMemorySpace = 18;
+  double maxDiskSpace = 19;
+  uint32 maxWorkerCount = 20;
+  uint64 createTime = 21;
 }
 
 message RegisterTaskResponse {
