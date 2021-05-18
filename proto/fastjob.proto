@@ -106,6 +106,7 @@ message RegisterTaskRequest {
 
 message RegisterTaskResponse {
   string message = 1;
+  uint64 code = 2;
 }
 
 message UnRegisterTaskRequest {
@@ -114,6 +115,7 @@ message UnRegisterTaskRequest {
 
 message UnRegisterTaskResponse {
   string message = 1;
+  uint64 code = 2;
 }
 
 message EntropyMetadataRequest {
@@ -122,6 +124,7 @@ message EntropyMetadataRequest {
 
 message EntropyMetadataResponse {
   string message = 1;
+  uint64 code = 2;
 }
 
 message DirectMailMetadataRequest {
@@ -130,4 +133,5 @@ message DirectMailMetadataRequest {
 
 message DirectMailMetadataResponse {
   string message = 1;
+  uint64 code = 2;
 }
