@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package fastjob;
+
+// The FastJob PingPong service definition.
+service PingPong {
+  rpc PingP(Ping) returns (Pong) {}
+}
+message Ping {
+
+}
+message Pong {
+  string message = 1;
+  uint64 code = 2;
+}
