@@ -15,6 +15,11 @@ service FastJob {
 
   // Worker heartbeat.
   rpc HeartBeat(HeartBeatRequest) returns (HeartBeatResponse) {}
+
+  rpc ReportInstanceStatus(ReportInstanceStatusRequest) returns (ReportInstanceStatusResponse) {}
+  rpc DeployContainer(DeployContainerRequest) returns (DeployContainerResponse) {}
+  rpc QueryExecutorCluster(QueryExecutorClusterRequest) returns (QueryExecutorClusterResponse) {}
+
 }
 
 message WorkerManagerConfig {
@@ -177,6 +182,45 @@ message SystemMetrics {
 }
 
 message HeartBeatResponse {
+  string message = 1;
+  uint64 code = 2;
+}
+
+message ReportInstanceStatusRequest {
+  uint64 jobId = 1;
+  uint64 instanceId = 2;
+  uint64  wfInstanceId = 3;
+  map<string, string> workflowContext = 4;
+  int32 instanceStatus = 5;
+  string result = 6;
+  uint64 totalTaskNum = 7;
+  uint64 succeedTaskNum = 8;
+  uint64 failedTaskNum = 9;
+  uint64 startTime = 10;
+  uint64 reportTime = 11;
+  uint64 sourceAddress = 12;
+}
+
+message ReportInstanceStatusResponse{
+  string message = 1;
+  uint64 code = 2;
+}
+
+message DeployContainerRequest{
+  uint64 containerId = 1;
+}
+
+message DeployContainerResponse {
+  string message = 1;
+  uint64 code = 2;
+}
+
+message QueryExecutorClusterRequest {
+  uint64 appId = 1;
+  uint64 jobId = 2;
+}
+
+message QueryExecutorClusterResponse{
   string message = 1;
   uint64 code = 2;
 }
