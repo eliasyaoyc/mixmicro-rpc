@@ -13,18 +13,8 @@ service FastJob {
   rpc RegisterTask(RegisterTaskRequest) returns (RegisterTaskResponse) {}
   rpc UnRegisterTask(UnRegisterTaskRequest) returns (UnRegisterTaskResponse) {}
 
-  // Sends a metadata request (Gossip protocol).
-  rpc EntropyMetadata(EntropyMetadataRequest) returns (EntropyMetadataResponse) {}
-  rpc DirectMailMetadata(DirectMailMetadataRequest) returns (DirectMailMetadataResponse) {}
-
-}
-
-enum WorkerManagerScope {
-  /// Belongs to `FastJobServer`.
-  ServerSide = 0;
-  /// Belongs to `ApplicationSDK`.
-  ApplicationSide = 1;
-  EMPTY = 2;
+  // Worker heartbeat.
+  rpc HeartBeat(HeartBeatRequest) returns (HeartBeatResponse) {}
 }
 
 message WorkerManagerConfig {
@@ -34,7 +24,6 @@ message WorkerManagerConfig {
 message RegisterWorkerManagerRequest {
   uint64 workerManagerId = 1;
   string localAddr = 2;
-  WorkerManagerScope workerManagerScope = 3;
   WorkerManagerConfig workerManagerConfig = 4;
 }
 
@@ -118,20 +107,76 @@ message UnRegisterTaskResponse {
   uint64 code = 2;
 }
 
-message EntropyMetadataRequest {
-  uint64 nodeId = 1;
+message HeartBeatRequest {
+  string workerAddress = 1;
+  string appName = 2;
+  uint64 appId = 3;
+  int64 heartbeatTime = 4;
+  repeated DeployContainerInfo containerInfos = 5;
+  string version = 6;
+  string tag = 7;
+  string client = 8;
+  string extra = 9;
+  SystemMetrics systemMetrics = 10;
 }
 
-message EntropyMetadataResponse {
-  string message = 1;
-  uint64 code = 2;
+message DeployContainerInfo {
+  uint64  containerId = 1;
+  string version = 2;
+  int64 deployedTime = 3;
+  string workerAddress = 4;
 }
 
-message DirectMailMetadataRequest {
-  uint64 nodeId = 1;
+message SystemMetrics {
+  /**
+ * CPU processor num.
+ */
+  uint32 cpuProcessors = 1;
+
+  /**
+   * Percent of CPU load.
+   */
+  double cpuLoad = 2;
+
+  /**
+   * Memory that is used by JVM, in GB.
+   */
+  double jvmUsedMemory = 3 ;
+  /**
+   * Max memory that JVM can use, in GB.
+   */
+  double jvmMaxMemory = 4;
+  /**
+   * Ratio of memory that JVM uses to total memory, 0.X,
+   * the value is between 0 and 1.
+   */
+  double jvmMemoryUsage = 5;
+
+  /**
+   * Total used disk space, in GB.
+   */
+  double diskUsed = 6;
+  /**
+   * Total disk space, in GB.
+   */
+  double diskTotal = 7;
+  /**
+   * Used disk ratio.
+   */
+  double diskUsage = 8;
+  /**
+   * user-customized system metrics collector, eg. GPU usage
+   * implement SystemMetricsCollector to set the value in worker side
+   * implement WorkerFilter to filter the worker in server side
+   */
+  string extra = 9;
+  /**
+   * Score of cache.
+   */
+  int32 score = 10;
 }
 
-message DirectMailMetadataResponse {
+message HeartBeatResponse {
   string message = 1;
   uint64 code = 2;
 }
