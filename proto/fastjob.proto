@@ -12,6 +12,14 @@ service FastJob {
   // Sends a register/unregister task request
   rpc RegisterTask(RegisterTaskRequest) returns (RegisterTaskResponse) {}
   rpc UnRegisterTask(UnRegisterTaskRequest) returns (UnRegisterTaskResponse) {}
+
+  // Worker heartbeat.
+  rpc HeartBeat(HeartBeatRequest) returns (HeartBeatResponse) {}
+
+  rpc ReportInstanceStatus(ReportInstanceStatusRequest) returns (ReportInstanceStatusResponse) {}
+  rpc DeployContainer(DeployContainerRequest) returns (DeployContainerResponse) {}
+  rpc QueryExecutorCluster(QueryExecutorClusterRequest) returns (QueryExecutorClusterResponse) {}
+
 }
 
 message WorkerManagerConfig {
@@ -100,6 +108,119 @@ message UnRegisterTaskRequest {
 }
 
 message UnRegisterTaskResponse {
+  string message = 1;
+  uint64 code = 2;
+}
+
+message HeartBeatRequest {
+  string workerAddress = 1;
+  string appName = 2;
+  uint64 appId = 3;
+  int64 heartbeatTime = 4;
+  repeated DeployContainerInfo containerInfos = 5;
+  string version = 6;
+  string tag = 7;
+  string client = 8;
+  string extra = 9;
+  SystemMetrics systemMetrics = 10;
+}
+
+message DeployContainerInfo {
+  uint64  containerId = 1;
+  string version = 2;
+  int64 deployedTime = 3;
+  string workerAddress = 4;
+}
+
+message SystemMetrics {
+  /**
+ * CPU processor num.
+ */
+  uint32 cpuProcessors = 1;
+
+  /**
+   * Percent of CPU load.
+   */
+  double cpuLoad = 2;
+
+  /**
+   * Memory that is used by JVM, in GB.
+   */
+  double jvmUsedMemory = 3 ;
+  /**
+   * Max memory that JVM can use, in GB.
+   */
+  double jvmMaxMemory = 4;
+  /**
+   * Ratio of memory that JVM uses to total memory, 0.X,
+   * the value is between 0 and 1.
+   */
+  double jvmMemoryUsage = 5;
+
+  /**
+   * Total used disk space, in GB.
+   */
+  double diskUsed = 6;
+  /**
+   * Total disk space, in GB.
+   */
+  double diskTotal = 7;
+  /**
+   * Used disk ratio.
+   */
+  double diskUsage = 8;
+  /**
+   * user-customized system metrics collector, eg. GPU usage
+   * implement SystemMetricsCollector to set the value in worker side
+   * implement WorkerFilter to filter the worker in server side
+   */
+  string extra = 9;
+  /**
+   * Score of cache.
+   */
+  int32 score = 10;
+}
+
+message HeartBeatResponse {
+  string message = 1;
+  uint64 code = 2;
+}
+
+message ReportInstanceStatusRequest {
+  uint64 jobId = 1;
+  uint64 instanceId = 2;
+  uint64  wfInstanceId = 3;
+  map<string, string> workflowContext = 4;
+  int32 instanceStatus = 5;
+  string result = 6;
+  uint64 totalTaskNum = 7;
+  uint64 succeedTaskNum = 8;
+  uint64 failedTaskNum = 9;
+  uint64 startTime = 10;
+  uint64 reportTime = 11;
+  uint64 sourceAddress = 12;
+}
+
+message ReportInstanceStatusResponse{
+  string message = 1;
+  uint64 code = 2;
+}
+
+message DeployContainerRequest{
+  uint64 containerId = 1;
+}
+
+message DeployContainerResponse {
+  string message = 1;
+  uint64 code = 2;
+}
+
+message QueryExecutorClusterRequest {
+  uint64 appId = 1;
+  uint64 jobId = 2;
+}
+
+message QueryExecutorClusterResponse{
   string message = 1;
   uint64 code = 2;
 }
