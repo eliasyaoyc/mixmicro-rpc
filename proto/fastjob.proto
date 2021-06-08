@@ -122,7 +122,7 @@ message HeartBeatRequest {
   string tag = 7;
   string client = 8;
   string extra = 9;
-  SystemMetrics systemMetrics = 10;
+  WorkerIndicators workerIndicators = 10;
 }
 
 message DeployContainerInfo {
@@ -132,7 +132,7 @@ message DeployContainerInfo {
   string workerAddress = 4;
 }
 
-message SystemMetrics {
+message WorkerIndicators {
   /**
  * CPU processor num.
  */
@@ -198,7 +198,7 @@ message ReportInstanceStatusRequest {
   uint64 failedTaskNum = 9;
   uint64 startTime = 10;
   uint64 reportTime = 11;
-  uint64 sourceAddress = 12;
+  string sourceAddress = 12;
 }
 
 message ReportInstanceStatusResponse{
