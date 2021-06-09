@@ -175,10 +175,6 @@ message WorkerIndicators {
    * implement WorkerFilter to filter the worker in server side
    */
   string extra = 9;
-  /**
-   * Score of cache.
-   */
-  int32 score = 10;
 }
 
 message HeartBeatResponse {
